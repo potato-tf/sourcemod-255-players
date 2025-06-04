@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     container:
-      image: ubuntu:20.04
+      image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk
     name: ${{ matrix.os_short }}-${{ matrix.compiler_cc }}
     env:
       SDKS: '["tf2"]'
@@ -32,19 +32,6 @@ jobs:
       MYSQL_VERSION: '5.7'
       MMSOURCE_VERSION: '1.12'
     steps:
-          
-      - name: Install Linux dependencies
-        if: startsWith(runner.os, 'Linux')
-        run: |
-          dpkg --add-architecture i386
-          apt-get update
-          apt-get install -y --no-install-recommends \
-            gcc-multilib g++-multilib libstdc++6 lib32stdc++6 \
-            libc6-dev libc6-dev-i386 linux-libc-dev \
-            git wget curl \
-            linux-libc-dev:i386 lib32z1-dev ${{ matrix.compiler_cc }}
-          pwd
-          PATH=~/.local/bin:$PATH
         
       - uses: actions/checkout@v4
         with:
