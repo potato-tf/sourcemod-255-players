@@ -51,6 +51,7 @@ jobs:
       
       - name: Install Python dependencies
         run: |
+          apt-get install python3-pip -y
           python -m pip install --upgrade pip setuptools wheel
 
       - name: Install dependencies
