@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: |
           apt-get update
-          apt-get install -y git
+          apt-get install -y git wget curl
         
       - uses: actions/checkout@v4
         with:
