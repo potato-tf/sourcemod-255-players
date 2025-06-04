@@ -28,11 +28,14 @@ jobs:
       SDKS: '["tf2"]'
       ARCH: x86,x86_64
       DEPENDENCIES_FOLDER: dependencies
-      #DEPENDENCIES_ROOT: ${{ github.workspace }}/dependencies
+      DEPENDENCIES_ROOT: ${{ github.workspace }}/dependencies
       MYSQL_VERSION: '5.7'
       MMSOURCE_VERSION: '1.12'
     steps:
-        
+
+      - run: |
+          mkdir -p ${{ github.workspace }}
+          cd ${{ github.workspace }}
       - uses: actions/checkout@v4
         with:
           submodules: recursive
