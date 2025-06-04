@@ -36,7 +36,6 @@ jobs:
       - name: Install Linux dependencies
         if: startsWith(runner.os, 'Linux')
         run: |
-          whoami
           dpkg --add-architecture i386
           apt-get update
           apt-get install -y --no-install-recommends \
@@ -44,7 +43,6 @@ jobs:
             libc6-dev libc6-dev-i386 linux-libc-dev \
             git wget curl \
             linux-libc-dev:i386 lib32z1-dev ${{ matrix.compiler_cc }}
-          su runner
           pwd
           PATH=~/.local/bin:$PATH
         
