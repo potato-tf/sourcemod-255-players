@@ -23,7 +23,6 @@ jobs:
     
     container:
       image: ubuntu:20.04
-      options: --user root
     name: ${{ matrix.os_short }}-${{ matrix.compiler_cc }}
     env:
       SDKS: '["tf2"]'
@@ -33,15 +32,11 @@ jobs:
       MYSQL_VERSION: '5.7'
       MMSOURCE_VERSION: '1.12'
     steps:
-    
-      - name: Install git etc
-        shell: bash
-        run: |
-          apt-get update
           
       - name: Install Linux dependencies
         if: startsWith(runner.os, 'Linux')
         run: |
+          whoami
           dpkg --add-architecture i386
           apt-get update
           apt-get install -y --no-install-recommends \
