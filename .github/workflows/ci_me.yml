@@ -28,7 +28,7 @@ jobs:
       SDKS: '["tf2"]'
       ARCH: x86,x86_64
       DEPENDENCIES_FOLDER: dependencies
-      DEPENDENCIES_ROOT: ${{ github.workspace }}/dependencies
+      #DEPENDENCIES_ROOT: ${{ github.workspace }}/dependencies
       MYSQL_VERSION: '5.7'
       MMSOURCE_VERSION: '1.12'
     steps:
@@ -59,8 +59,9 @@ jobs:
         shell: bash
         run: |
           PATH=~/.local/bin:$PATH
-          mkdir -p ${{ env.DEPENDENCIES_ROOT }}
-          cd ${{ env.DEPENDENCIES_ROOT }}
+          mkdir -p ${{ env.DEPENDENCIES_FOLDER }}
+          cd ${{ env.DEPENDENCIES_FOLDER }}
+          echo DEPENDENCIES_ROOT=$(pwd) >> $GITHUB_ENV
 
           # Satisfy checkout-deps requirement for a "sourcemod" folder.
           mkdir -p sourcemod
