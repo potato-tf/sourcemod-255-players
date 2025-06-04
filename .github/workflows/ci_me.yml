@@ -38,7 +38,20 @@ jobs:
         shell: bash
         run: |
           apt-get update
-          apt-get install -y git wget curl
+          
+      - name: Install Linux dependencies
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          dpkg --add-architecture i386
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            gcc-multilib g++-multilib libstdc++6 lib32stdc++6 \
+            libc6-dev libc6-dev-i386 linux-libc-dev \
+            git wget curl \
+            linux-libc-dev:i386 lib32z1-dev ${{ matrix.compiler_cc }}
+          su runner
+          pwd
+          PATH=~/.local/bin:$PATH
         
       - uses: actions/checkout@v4
         with:
@@ -74,16 +87,6 @@ jobs:
           # Satisfy checkout-deps requirement for a "sourcemod" folder.
           mkdir -p sourcemod
           ../sourcemod/tools/checkout-deps.sh -s ${{ join(fromJSON(env.SDKS)) }} -d
-
-      - name: Install Linux dependencies
-        if: startsWith(runner.os, 'Linux')
-        run: |
-          dpkg --add-architecture i386
-          apt-get update
-          apt-get install -y --no-install-recommends \
-            gcc-multilib g++-multilib libstdc++6 lib32stdc++6 \
-            libc6-dev libc6-dev-i386 linux-libc-dev \
-            linux-libc-dev:i386 lib32z1-dev ${{ matrix.compiler_cc }}
 
       - name: Select clang compiler
         if: startsWith(runner.os, 'Linux')
