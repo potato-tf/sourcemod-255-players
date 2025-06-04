@@ -51,6 +51,7 @@ jobs:
       
       - name: Install Python dependencies
         run: |
+          PATH=~/.local/bin:$PATH
           apt-get install python3-pip -y
           python -m pip install --upgrade pip setuptools wheel
 
@@ -63,6 +64,7 @@ jobs:
           # Satisfy checkout-deps requirement for a "sourcemod" folder.
           mkdir -p sourcemod
           ../sourcemod/tools/checkout-deps.sh -s ${{ join(fromJSON(env.SDKS)) }} -d
+          ls
 
       - name: Select clang compiler
         if: startsWith(runner.os, 'Linux')
@@ -75,9 +77,9 @@ jobs:
       - name: Build
         working-directory: sourcemod
         run: |
-          PATH=~/.local/bin:$PATH
           mkdir build
           cd build
+          ls ${{ env.DEPENDENCIES_ROOT }}
           python ../configure.py --enable-optimize --sdks=${{ join(fromJSON(env.SDKS)) }} --targets=${{ env.ARCH }} --mms-path=${{ env.DEPENDENCIES_ROOT }}/mmsource-${{ env.MMSOURCE_VERSION }} --hl2sdk-root=${{ env.DEPENDENCIES_ROOT }} --mysql-path=${{ env.DEPENDENCIES_ROOT }}/mysql-${{ env.MYSQL_VERSION }} --mysql64-path=${{ env.DEPENDENCIES_ROOT }}/mysql-${{ env.MYSQL_VERSION }}-x86_64
           ambuild
           tar -czvf package.tar.gz package
